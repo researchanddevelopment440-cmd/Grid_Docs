@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .category-tree {
+        list-style: none;
+        padding-left: 0;
+    }
+    .category-tree ul {
+        list-style: none;
+        padding-left: 25px;
+    }
+    .category-tree li {
+        margin: 8px 0;
+    }
+    .category-tree label {
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .category-tree input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+</style>
+
+<div class="card">
+    <h2>Category Permissions for: {{ target_username }}</h2>
+    <form method="POST" action="/save-category-permissions/{{ user_id }}">
+        <div style="margin-bottom: 15px;">
+            <label>
+                <input type="checkbox" id="selectAll"> Select All
+            </label>
+        </div>
+
+        {% macro render_tree(nodes) %}
+            {% if nodes %}
+                <ul class="category-tree">
+                {% for node in nodes %}
+                    <li>
+                        <label>
+                            <input type="checkbox" name="categories" value="{{ node.id }}"
+                                {% if node.id in assigned %}checked{% endif %}>
+                            {{ node.name }}
+                        </label>
+                        {% if node.children %}
+                            {{ render_tree(node.children) }}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endmacro %}
+
+        {{ render_tree(category_tree) }}
+
+        <br>
+        <button type="submit">Save Permissions</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('selectAll').addEventListener('change', function(e) {
+        const isChecked = e.target.checked;
+        document.querySelectorAll('input[name="categories"]').forEach(cb => {
+            cb.checked = isChecked;
+        });
+    });
+</script>
+{% endblock %}

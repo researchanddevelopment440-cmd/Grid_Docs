@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card">
+
+    <h2>Permission Management</h2>
+
+    <br>
+
+    <table>
+
+        <tr>
+            <th>User</th>
+            <th>Permission</th>
+        </tr>
+
+        {% for row in permissions %}
+
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+{% endblock %}

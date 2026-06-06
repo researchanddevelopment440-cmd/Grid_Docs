@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .sortable-list tbody tr {
+        cursor: grab;
+    }
+    .sortable-list tbody tr:active {
+        cursor: grabbing;
+    }
+    .subcategory td:first-child {
+        padding-left: 40px;
+    }
+    .drag-handle {
+        cursor: grab;
+        margin-right: 10px;
+        font-size: 18px;
+        color: #888;
+    }
+</style>
+
+<div class="card">
+    <h2>Manage Categories</h2>
+    <form method="POST" action="/categories/add" style="margin-bottom: 20px; display: flex; gap: 10px;">
+        <input type="text" name="name" placeholder="Category Name" required style="flex:2;">
+        <select name="parent_id" style="flex:1;">
+            <option value="">-- Main Category --</option>
+            {% for cat in categories if not cat[2] %}
+                <option value="{{ cat[0] }}">{{ cat[1] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Add Category</button>
+    </form>
+
+    <table class="sortable-list" id="cat-table">
+        <thead>
+            <tr><th>Order</th><th>Name</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+            {% for cat in categories %}
+            <tr data-id="{{ cat[0] }}" {% if cat[2] %}class="subcategory"{% endif %}>
+                <td><span class="drag-handle">☰</span> {{ loop.index }}</td>
+                <td>{% if cat[2] %}↳ {% endif %}<strong>{{ cat[1] }}</strong>
+                    {% if cat[4] %}<span style="color:#666;"> (parent: {{ cat[4] }})</span>{% endif %}
+                </td>
+                <td>
+                    <input type="checkbox" class="cat-checkbox" data-id="{{ cat[0] }}">
+                    <a href="/categories/delete/{{ cat[0] }}" onclick="return confirm('Delete?')" style="margin-left:10px; color:red;">🗑️</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div style="margin-top:15px;">
+        <button id="selectAllBtn">Select All</button>
+        <button id="deleteSelectedBtn" style="background:#dc3545; color:white;">Delete Selected</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script>
+    const tbody = document.querySelector('#cat-table tbody');
+    new Sortable(tbody, {
+        animation: 150,
+        handle: '.drag-handle',
+        onEnd: function() {
+            const ids = Array.from(tbody.children).map(tr => tr.dataset.id);
+            fetch('/categories/order', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ordered_ids: ids})
+            });
+        }
+    });
+    document.getElementById('selectAllBtn').onclick = () => {
+        document.querySelectorAll('.cat-checkbox').forEach(cb => cb.checked = true);
+    };
+    document.getElementById('deleteSelectedBtn').onclick = async () => {
+        const selected = Array.from(document.querySelectorAll('.cat-checkbox:checked')).map(cb => cb.dataset.id);
+        if(selected.length && confirm(`Delete ${selected.length} categories?`)) {
+            for(let id of selected) await fetch(`/categories/delete/${id}`);
+            location.reload();
+        }
+    };
+</script>
+{% endblock %}

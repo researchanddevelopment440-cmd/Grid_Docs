@@ -1,0 +1,12 @@
+{% for child in children %}
+    <li class="{% if child.children %}has-children{% endif %}">
+        <span class="tree-item" data-id="{{ child.id }}">
+            <span class="folder-icon">📁</span> {{ child.name }}
+        </span>
+        {% if child.children %}
+            <ul class="children">
+                {% include "category_children.html" with children=child.children %}
+            </ul>
+        {% endif %}
+    </li>
+{% endfor %}

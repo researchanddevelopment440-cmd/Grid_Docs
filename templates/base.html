@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>GridDocs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+        body { background:#f5f7fa; }
+        .sidebar { position:fixed; left:0; top:0; width:250px; height:100vh; background:#0c3030; color:white; overflow-y: auto; }
+        .logo { padding:25px; font-size:24px; font-weight:600; color:#2AD4D4; text-align:center; }
+        .menu { list-style:none; }
+        .menu li a { display:block; color:white; text-decoration:none; padding:15px 25px; transition:.3s; }
+        .menu li a:hover { background:#2AD4D4; color:#042424; }
+        .content { margin-left:250px; padding:30px; }
+        .topbar { background:white; padding:20px; border-radius:15px; display:flex; justify-content:space-between; box-shadow:0 2px 10px rgba(0,0,0,.08); margin-bottom:25px; }
+        .card { background:white; padding:25px; border-radius:15px; box-shadow:0 2px 10px rgba(0,0,0,.08); }
+        table { width:100%; border-collapse:collapse; }
+        table th, table td { padding:12px; border-bottom:1px solid #ddd; text-align:left; }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <div class="logo">GridDocs</div>
+    <ul class="menu">
+        <li><a href="/dashboard">Dashboard</a></li>
+        <!-- Sidebar में अब कोई category links नहीं होंगी -->
+        {% if role == 'admin' %}
+        <li><a href="/users">Users</a></li>
+        <li><a href="/permissions">Permissions</a></li>
+        <li><a href="/categories">Categories Management</a></li>
+        {% endif %}
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+</div>
+<div class="content">
+    <div class="topbar">
+        <div>Welcome {{ username }}</div>
+        <div>{{ role }}</div>
+    </div>
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>

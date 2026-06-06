@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .tree-view {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+    }
+    .tree-view li {
+        margin: 6px 0;
+        list-style: none;
+    }
+    .tree-view ul {
+        list-style: none;
+        padding-left: 25px;
+        margin: 4px 0;
+    }
+    .tree-view .folder {
+        font-weight: 600;
+        color: #0c3030;
+    }
+    .tree-view .item {
+        color: #2c3e50;
+    }
+    .tree-view a {
+        text-decoration: none;
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: background 0.2s;
+    }
+    .tree-view a:hover {
+        background: #e6f7f7;
+    }
+    .badge {
+        background: #2AD4D4;
+        color: #042424;
+        border-radius: 12px;
+        padding: 1px 6px;
+        font-size: 12px;
+        margin-left: 8px;
+    }
+</style>
+
+<div class="card">
+    <h2>Categories</h2>
+    {% if category_tree %}
+        <ul class="tree-view">
+            {% macro render_tree(nodes) %}
+                {% for node in nodes %}
+                    <li>
+                        <a href="/category/{{ node.id }}">
+                            {% if node.children %}
+                                <span class="folder">📁 {{ node.name }}</span>
+                            {% else %}
+                                <span class="item">📄 {{ node.name }}</span>
+                            {% endif %}
+                        </a>
+                        {% if node.children %}
+                            <ul>{{ render_tree(node.children) }}</ul>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            {% endmacro %}
+            {{ render_tree(category_tree) }}
+        </ul>
+    {% else %}
+        <p>No categories assigned to you.</p>
+    {% endif %}
+</div>
+{% endblock %}
