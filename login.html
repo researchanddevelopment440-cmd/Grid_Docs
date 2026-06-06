@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Page</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(
+        135deg,
+        #071a1a,
+        #0c3030,
+        #2AD4D4
+    );
+    overflow:hidden;
+}
+
+body::before{
+    content:'';
+    position:absolute;
+    width:300px;
+    height:300px;
+    background:#2AD4D4;
+    border-radius:50%;
+    top:-100px;
+    left:-100px;
+    filter:blur(120px);
+    opacity:.5;
+}
+
+body::after{
+    content:'';
+    position:absolute;
+    width:350px;
+    height:350px;
+    background:#2AD4D4;
+    border-radius:50%;
+    bottom:-120px;
+    right:-120px;
+    filter:blur(150px);
+    opacity:.4;
+}
+
+.login-container{
+    width:380px;
+    padding:40px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:24px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.25);
+    text-align:center;
+    position:relative;
+    z-index:1;
+}
+
+.login-container h2{
+    color:white;
+    font-size:32px;
+    margin-bottom:8px;
+}
+
+.login-container p{
+    color:rgba(255,255,255,0.7);
+    margin-bottom:30px;
+    font-size:14px;
+}
+
+.input-group{
+    margin-bottom:20px;
+    text-align:left;
+}
+
+.input-group label{
+    display:block;
+    color:white;
+    margin-bottom:8px;
+    font-size:14px;
+}
+
+.input-group input{
+    width:100%;
+    padding:14px;
+    border:none;
+    outline:none;
+    border-radius:12px;
+    background:rgba(255,255,255,0.1);
+    color:white;
+    font-size:15px;
+    border:1px solid rgba(255,255,255,0.15);
+    transition:.3s;
+}
+
+.input-group input::placeholder{
+    color:rgba(255,255,255,0.5);
+}
+
+.input-group input:focus{
+    border-color:#2AD4D4;
+    box-shadow:0 0 15px rgba(42,212,212,0.5);
+}
+
+.login-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#2AD4D4;
+    color:#042424;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.login-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(42,212,212,0.45);
+}
+
+.footer-text{
+    margin-top:20px;
+    color:rgba(255,255,255,0.7);
+    font-size:13px;
+}
+
+.footer-text a{
+    color:#2AD4D4;
+    text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-container">
+    <h2>Welcome</h2>
+    <p>Sign in to continue</p>
+
+    <form>
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" placeholder="Enter username">
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" placeholder="Enter password">
+        </div>
+
+        <button type="submit" class="login-btn">
+            Login
+        </button>
+    </form>
+
+    <div class="footer-text">
+        Forgot Password?
+    </div>
+</div>
+
+</body>
+</html>
